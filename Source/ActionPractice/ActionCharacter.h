@@ -18,7 +18,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -37,5 +38,6 @@ private:
 		void MoveForward(float value);
 	UFUNCTION()
 		void MoveRight(float value);
-
+	UFUNCTION()
+		void PrimaryAttack();
 };
