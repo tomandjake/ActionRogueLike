@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
+#include "InteractionComponent.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -17,6 +18,7 @@ AActionCharacter::AActionCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComp->SetupAttachment(SpringArmComp);
 	SpringArmComp->SetupAttachment(RootComponent);
+	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
@@ -47,6 +49,7 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AActionCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AActionCharacter::PrimaryInteract);
 }
 
 void AActionCharacter::MoveForward(float value)
@@ -77,5 +80,14 @@ void AActionCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+void AActionCharacter::PrimaryInteract()
+{
+	if (InteractionComp == nullptr)
+	{
+		return;
+	}
+	InteractionComp->PrimaryInteract();
 }
 

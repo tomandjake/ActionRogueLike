@@ -34,10 +34,14 @@ private:
 		class UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 		class USpringArmComponent* SpringArmComp;
+	UPROPERTY(VisibleAnywhere)
+		class UInteractionComponent* InteractionComp;
 	UFUNCTION()
 		void MoveForward(float value);
 	UFUNCTION()
 		void MoveRight(float value);
 	UFUNCTION()
 		void PrimaryAttack();
+	UFUNCTION()
+		void PrimaryInteract();
 };
