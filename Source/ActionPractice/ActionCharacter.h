@@ -33,6 +33,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion")
 		float ForwardSpeed = 50;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UAttributeComponent* AttributeComp;
 private:
 	UPROPERTY(VisibleAnywhere)
 		class UCameraComponent* CameraComp;
