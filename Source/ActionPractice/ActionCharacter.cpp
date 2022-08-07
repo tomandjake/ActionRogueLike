@@ -73,13 +73,10 @@ void AActionCharacter::MoveRight(float value)
 
 void AActionCharacter::PrimaryAttack()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	PlayAnimMontage(AttackAnim);
 
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	GetWorldTimerManager().SetTimer(Timerhandle_PrimaryAttack,this,&AActionCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+	//GetWorldTimerManager().ClearTimer(Timerhandle_PrimaryAttack);
 }
 
 void AActionCharacter::PrimaryInteract()
@@ -89,5 +86,16 @@ void AActionCharacter::PrimaryInteract()
 		return;
 	}
 	InteractionComp->PrimaryInteract();
+}
+
+void AActionCharacter::PrimaryAttack_TimeElapsed()
+{
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
 
