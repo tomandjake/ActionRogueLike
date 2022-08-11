@@ -11,8 +11,8 @@ UAttributeComponent::UAttributeComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
-
-	Health = 100;
+	MaxHealth = 100;
+	Health = MaxHealth;
 }
 
 
