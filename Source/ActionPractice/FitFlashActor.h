@@ -4,29 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MagicProjectile.generated.h"
+#include "FitFlashActor.generated.h"
 
 UCLASS()
-class ACTIONPRACTICE_API AMagicProjectile : public AActor
+class ACTIONPRACTICE_API AFitFlashActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMagicProjectile();
+	AFitFlashActor();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class USphereComponent* SphereComp;
+
 	UPROPERTY(VisibleAnywhere)
-	class UProjectileMovementComponent* MovementComp;
+	class UStaticMeshComponent* StaticMeshComp;
 	UPROPERTY(VisibleAnywhere)
-	class UParticleSystemComponent* EffectComp;
+	class UAttributeComponent* AttributeComp;
+	
 	UFUNCTION()
-	void OnActorBeginOverlap(UPrimitiveComponent* 
-		OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta);
+	
 
 public:	
 	// Called every frame

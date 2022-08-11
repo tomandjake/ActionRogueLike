@@ -20,6 +20,8 @@ bool UAttributeComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;
 
+	OnHealthChanged.Broadcast(nullptr, nullptr, Health, Delta);
+
 	return true;
 }
 
