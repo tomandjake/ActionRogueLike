@@ -12,7 +12,7 @@ AFitFlashActor::AFitFlashActor()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("Static Mesh");
 	AttributeComp = CreateDefaultSubobject<UAttributeComponent>("Attribute Comp");
 	RootComponent = StaticMeshComp;
-	AttributeComp->OnHealthChanged.AddUniqueDynamic(this, &AFitFlashActor::OnHealthChanged);
+	AttributeComp->OnHealthChanged.AddDynamic(this, &AFitFlashActor::OnHealthChanged);
 }
 
 // Called when the game starts or when spawned

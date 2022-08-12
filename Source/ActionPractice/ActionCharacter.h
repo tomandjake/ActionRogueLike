@@ -49,4 +49,9 @@ private:
 	void PrimaryInteract();
 	void PrimaryAttack_TimeElapsed();
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+	virtual void PostInitializeComponents() override;
+
 };

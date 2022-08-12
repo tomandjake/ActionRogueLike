@@ -27,6 +27,13 @@ AActionCharacter::AActionCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+void AActionCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AttributeComp->OnHealthChanged.AddDynamic(this, &AActionCharacter::OnHealthChanged);
+}
+
 // Called when the game starts or when spawned
 void AActionCharacter::BeginPlay()
 {
@@ -106,4 +113,16 @@ void AActionCharacter::PrimaryAttack_TimeElapsed()
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 	}
 }
+
+void AActionCharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta)
+{
+	if (NewHealth <= 0.0f && Delta < 0.0f)
+	{
+
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
+}
+
+
 
