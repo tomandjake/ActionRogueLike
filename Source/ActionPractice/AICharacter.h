@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "AICharacter.generated.h"
 
+class UPawnSensingComponent;
+
 UCLASS()
 class ACTIONPRACTICE_API AAICharacter : public ACharacter
 {
@@ -17,13 +19,21 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	//virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* SensingComp;
+
+	UFUNCTION()
+	void OnPawnSeen(APawn* Pawn);
+
+//public:	
+//	// Called every frame
+//	virtual void Tick(float DeltaTime) override;
+//
+//	// Called to bind functionality to input
+//	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

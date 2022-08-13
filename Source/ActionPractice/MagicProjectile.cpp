@@ -25,6 +25,8 @@ AMagicProjectile::AMagicProjectile()
 	MovementComp->InitialSpeed = 1000.0f;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+
+	Damage = 1;
 }
 
 // Called when the game starts or when spawned
@@ -42,7 +44,7 @@ void AMagicProjectile::OnActorBeginOverlap(UPrimitiveComponent* OverlappedCompon
 		UAttributeComponent* AttributeComp = Cast<UAttributeComponent>(OtherActor->GetComponentByClass(UAttributeComponent::StaticClass()));
 		if (AttributeComp)
 		{
-			AttributeComp->ApplyHealthChange(-20.0f);
+			AttributeComp->ApplyHealthChange(Damage);
 
 			Destroy();
 		}

@@ -9,11 +9,14 @@ void AActionAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RunBehaviorTree(BehaviorTree);
-
-	APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-	if (MyPawn)
+	if (ensureMsgf(BehaviorTree, TEXT("Behaviro is nullptr."))
 	{
-		GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
+		RunBehaviorTree(BehaviorTree);
 	}
+
+	//APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+	//if (MyPawn)
+	//{
+	//	GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
+	//}
 }

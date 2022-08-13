@@ -24,6 +24,8 @@ protected:
 	class UProjectileMovementComponent* MovementComp;
 	UPROPERTY(VisibleAnywhere)
 	class UParticleSystemComponent* EffectComp;
+	UPROPERTY(EditAnywhere)
+	float Damage;
 	UFUNCTION()
 	void OnActorBeginOverlap(UPrimitiveComponent* 
 		OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

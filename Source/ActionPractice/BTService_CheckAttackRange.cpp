@@ -29,4 +29,5 @@ void UBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 	}
 
 	BlackBoardComp->SetValueAsBool(AttackRangeKey.SelectedKeyName, bWithinRange && bHasLOS);
+	UE_LOG(LogTemp, Warning, TEXT("bWithinRange && bHasLOS: %d"), bWithinRange && bHasLOS);
 }
