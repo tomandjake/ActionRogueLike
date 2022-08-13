@@ -26,6 +26,32 @@ void AActionGameModeBase::StartPlay()
 
 void AActionGameModeBase::SpawnBotTimerElapsed()
 {
+	int NumOfAliveBots = 0;
+	for (TActorIterator<AAICharacter> It(GetWorld()); It; ++It)
+	{
+		AAICharacter* Bot = *It;
+		if (Bot == nullptr) continue;
+		UAttributeComponent* HealthComp = Cast<UAttributeComponent>(Bot->GetComponentByClass(UAttributeComponent::StaticClass()));
+		if (HealthComp && HealthComp->IsAlive())
+		{
+			NumOfAliveBots++;
+		}
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Find %d alive bots."), NumOfAliveBots);
+
+	int32 MaxBotCount = 10;
+
+	if (DiffcultyCurve)
+	{
+		MaxBotCount = DiffcultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+	}
+
+	if (NumOfAliveBots >= MaxBotCount)
+	{
+		return;
+	}
+
 	UEnvQueryInstanceBlueprintWrapper* QueryInstance = UEnvQueryManager::RunEQSQuery(this, SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
 	if (ensure(QueryInstance))
 	{
@@ -40,33 +66,9 @@ void AActionGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* Qu
 		UE_LOG(LogTemp, Warning, TEXT("Spawn bot EQS Query Faild!"));
 		return;
 	}
+
 	TArray<FVector> Locations = QueryInstance->GetResultsAsLocations();
-
-	int NumOfAliveBots = 0;
-	for (TActorIterator<AAICharacter> It(GetWorld()); It; ++It)
-	{
-		AAICharacter* Bot = *It;
-		if (Bot == nullptr) continue;
-		UAttributeComponent* HealthComp = Cast<UAttributeComponent>(Bot->GetComponentByClass(UAttributeComponent::StaticClass()));
-		if (HealthComp&&HealthComp->IsAlive())
-		{
-			NumOfAliveBots++;
-		}
-	}
-
-	int32 MaxBotCount = 10;
-
-	if (DiffcultyCurve)
-	{
-		MaxBotCount = DiffcultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
-	}
-
-	if (NumOfAliveBots >= MaxBotCount)
-	{
-		return;
-	}
-
-	if (Locations.Num() > 0)
+	if (Locations.IsValidIndex(0))
 	{
 		FVector CurLocation = Locations[0];
 		CurLocation.Z += 100;

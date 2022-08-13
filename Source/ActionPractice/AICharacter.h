@@ -33,6 +33,9 @@ protected:
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 //public:	
 //	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
