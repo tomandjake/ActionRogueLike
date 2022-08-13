@@ -14,9 +14,9 @@ AAICharacter::AAICharacter()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	SensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
-
-
 
 void AAICharacter::PostInitializeComponents()
 {

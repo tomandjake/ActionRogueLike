@@ -7,6 +7,7 @@
 #include "AICharacter.generated.h"
 
 class UPawnSensingComponent;
+class UAttributeComponent;
 
 UCLASS()
 class ACTIONPRACTICE_API AAICharacter : public ACharacter
@@ -25,6 +26,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* SensingComp;
+
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* AttributeComp;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);

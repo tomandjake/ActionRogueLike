@@ -9,7 +9,7 @@ void AActionAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ensureMsgf(BehaviorTree, TEXT("Behaviro is nullptr."))
+	if (ensureMsgf(BehaviorTree, TEXT("Behaviro is nullptr.")))
 	{
 		RunBehaviorTree(BehaviorTree);
 	}
