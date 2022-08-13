@@ -30,3 +30,23 @@ bool UAttributeComponent::ApplyHealthChange(float Delta)
 	return true;
 }
 
+UAttributeComponent* UAttributeComponent::GetAttribute(AActor* FromActor)
+{
+	if (FromActor)
+	{
+		return Cast<UAttributeComponent>(FromActor->GetComponentByClass(UAttributeComponent::StaticClass()));
+	}
+	return nullptr;
+
+}
+
+bool UAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	UAttributeComponent* HealthComp = Cast<UAttributeComponent>(Actor->GetComponentByClass(UAttributeComponent::StaticClass()));
+	if (HealthComp)
+	{
+		return HealthComp->IsAlive();
+	}
+	return false;
+}
+

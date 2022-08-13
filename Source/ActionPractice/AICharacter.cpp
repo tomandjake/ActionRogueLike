@@ -9,6 +9,7 @@
 #include "AttributeComponent.h"
 #include "ActionAIController.h"
 #include "BrainComponent.h"
+#include "Components/MeshComponent.h"
 // Sets default values
 AAICharacter::AAICharacter()
 {
@@ -19,6 +20,7 @@ AAICharacter::AAICharacter()
 	AttributeComp = CreateDefaultSubobject< UAttributeComponent>(TEXT("HealthComp"));
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	TimeToHitParamName = "GameTime";
 }
 
 void AAICharacter::PostInitializeComponents()
@@ -29,26 +31,34 @@ void AAICharacter::PostInitializeComponents()
 }
 
 
-void AAICharacter::OnPawnSeen(APawn* Pawn)
+void AAICharacter::SetTargetActor(AActor* Actor)
 {
-	AActionCharacter* Player = Cast<AActionCharacter>(Pawn);
+	AActionCharacter* Player = Cast<AActionCharacter>(Actor);
 	if (Player == nullptr) return;
 	AAIController* AIC = Cast<AAIController>(GetController());
 	if (AIC)
 	{
 		UBlackboardComponent* BBComp = AIC->GetBlackboardComponent();
 
-		BBComp->SetValueAsObject("TargetActor", Pawn);
-
-		DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
+		BBComp->SetValueAsObject("TargetActor", Actor);
 	}
+}
+
+void AAICharacter::OnPawnSeen(APawn* Pawn)
+{
+	SetTargetActor(Pawn);
+	DrawDebugString(GetWorld(), GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
 }
 
 void AAICharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
 	if (Delta < 0.0f)
 	{
-
+		if (InstigatorActor != this)
+		{
+			SetTargetActor(InstigatorActor);
+		}
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 		if (NewHealth < 0.0f)
 		{
 			// stop BT

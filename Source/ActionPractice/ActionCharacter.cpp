@@ -85,7 +85,9 @@ void AActionCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
 
-	GetWorldTimerManager().SetTimer(Timerhandle_PrimaryAttack,this,&AActionCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+	FRotator Rotator = GetControlRotation();
+	SetActorRotation(Rotator);
+	GetWorldTimerManager().SetTimer(Timerhandle_PrimaryAttack,this,&AActionCharacter::PrimaryAttack_TimeElapsed, 0.1f);
 	//GetWorldTimerManager().ClearTimer(Timerhandle_PrimaryAttack);
 }
 
@@ -108,7 +110,6 @@ void AActionCharacter::PrimaryAttack_TimeElapsed()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParams.Instigator = this;
-
 
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 	}

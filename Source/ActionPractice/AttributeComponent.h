@@ -33,4 +33,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static UAttributeComponent* GetAttribute(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
+	static bool IsActorAlive(AActor* Actor);
 };

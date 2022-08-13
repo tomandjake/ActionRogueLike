@@ -24,6 +24,11 @@ protected:
 
 	virtual void PostInitializeComponents();
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
+	void SetTargetActor(AActor* Actor);
+
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* SensingComp;
 
