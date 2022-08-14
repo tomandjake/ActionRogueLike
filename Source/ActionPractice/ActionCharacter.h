@@ -15,6 +15,9 @@ public:
 	// Sets default values for this character's properties
 	AActionCharacter();
 
+	UFUNCTION(Exec)
+	void HealSelf(float Amout=100);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

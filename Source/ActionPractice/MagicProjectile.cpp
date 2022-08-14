@@ -44,7 +44,7 @@ void AMagicProjectile::OnActorBeginOverlap(UPrimitiveComponent* OverlappedCompon
 		UAttributeComponent* AttributeComp = Cast<UAttributeComponent>(OtherActor->GetComponentByClass(UAttributeComponent::StaticClass()));
 		if (AttributeComp)
 		{
-			AttributeComp->ApplyHealthChange(Damage);
+			AttributeComp->ApplyHealthChange(GetInstigator(),Damage);
 
 			Destroy();
 		}

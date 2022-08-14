@@ -2,6 +2,9 @@
 
 
 #include "AttributeComponent.h"
+#include "ActionGameModeBase.h"
+
+static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global Damage Modifier for Attribute Component."), ECVF_Cheat);
 
 // Sets default values for this component's properties
 UAttributeComponent::UAttributeComponent()
@@ -21,13 +24,35 @@ bool UAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
-bool UAttributeComponent::ApplyHealthChange(float Delta)
+bool UAttributeComponent::ApplyHealthChange(AActor* Instigator,float Delta)
 {
-	Health += Delta;
+	if (!GetOwner()->CanBeDamaged())
+	{
+		return false;
+	}
+	float OldHealth = Health;
+	if (Delta < 0.0f)
+	{
+		float DamageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
 
+		Delta *= DamageMultiplier;
+	}
+
+	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
+
+	float ActualDelta = Health - OldHealth;
 	OnHealthChanged.Broadcast(nullptr, nullptr, Health, Delta);
 
-	return true;
+	if (Delta < 0.0f && Health <= 0.0f)
+	{
+		AActionGameModeBase* GM = GetWorld()->GetAuthGameMode<AActionGameModeBase>();
+		if (GM)
+		{
+			GM->OnActorKilled(GetOwner(), Instigator);
+		}
+	}
+
+	return ActualDelta != 0;
 }
 
 UAttributeComponent* UAttributeComponent::GetAttribute(AActor* FromActor)
@@ -36,8 +61,8 @@ UAttributeComponent* UAttributeComponent::GetAttribute(AActor* FromActor)
 	{
 		return Cast<UAttributeComponent>(FromActor->GetComponentByClass(UAttributeComponent::StaticClass()));
 	}
-	return nullptr;
 
+	return nullptr;
 }
 
 bool UAttributeComponent::IsActorAlive(AActor* Actor)

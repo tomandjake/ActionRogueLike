@@ -23,7 +23,8 @@ protected:
 	
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime)override;
 
+public:
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
-	AActor*	AttackedActor;
+	AActor*	AttachedActor;
 	
 };

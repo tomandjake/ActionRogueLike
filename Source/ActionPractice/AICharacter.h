@@ -8,6 +8,8 @@
 
 class UPawnSensingComponent;
 class UAttributeComponent;
+class UUserWidget;
+class UActionUserWidget;
 
 UCLASS()
 class ACTIONPRACTICE_API AAICharacter : public ACharacter
@@ -24,8 +26,13 @@ protected:
 
 	virtual void PostInitializeComponents();
 
+	UActionUserWidget* ActiveHealthBar;
+
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName TimeToHitParamName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HealthBarWidget;
 
 	void SetTargetActor(AActor* Actor);
 

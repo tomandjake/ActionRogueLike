@@ -27,6 +27,11 @@ AActionCharacter::AActionCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+void AActionCharacter::HealSelf(float Amout /* = 100*/)
+{
+	AttributeComp->ApplyHealthChange(this, Amout);
+}
+
 void AActionCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();

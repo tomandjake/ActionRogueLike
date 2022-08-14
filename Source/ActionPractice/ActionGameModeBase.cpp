@@ -8,8 +8,9 @@
 #include "EngineUtils.h"
 #include "AttributeComponent.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
+#include "ActionCharacter.h"
 
-
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable Spawning of bots via timer."), ECVF_Cheat);
 
 AActionGameModeBase::AActionGameModeBase()
 {
@@ -26,6 +27,12 @@ void AActionGameModeBase::StartPlay()
 
 void AActionGameModeBase::SpawnBotTimerElapsed()
 {
+	if (!CVarSpawnBots.GetValueOnGameThread())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Bot Spawning disabled vai cvar 'CvarSpawnBots'."));
+		return;
+	}
+
 	int NumOfAliveBots = 0;
 	for (TActorIterator<AAICharacter> It(GetWorld()); It; ++It)
 	{
@@ -75,3 +82,30 @@ void AActionGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* Qu
 		GetWorld()->SpawnActor<AActor>(MinionClass, CurLocation, FRotator::ZeroRotator);
 	}
 }
+
+void AActionGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if (ensure(Controller))
+	{
+		Controller->UnPossess();
+
+		RestartPlayer(Controller);
+	}
+}
+
+void AActionGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+	AActionCharacter* Player = Cast<AActionCharacter>(VictimActor);
+	if (Player)
+	{
+		FTimerHandle RespawnDelay;
+
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+
+		
+		GetWorldTimerManager().SetTimer(RespawnDelay,Delegate,2.0f,false);
+	}
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Kill: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+}
+

@@ -10,6 +10,7 @@
 #include "ActionAIController.h"
 #include "BrainComponent.h"
 #include "Components/MeshComponent.h"
+#include "ActionUserWidget.h"
 // Sets default values
 AAICharacter::AAICharacter()
 {
@@ -58,8 +59,19 @@ void AAICharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent*
 		{
 			SetTargetActor(InstigatorActor);
 		}
+		if (ActiveHealthBar == nullptr)
+		{
+			ActiveHealthBar = CreateWidget<UActionUserWidget>(GetWorld(), HealthBarWidget);
+
+			if (ActiveHealthBar)
+			{
+				ActiveHealthBar->AttachedActor = this;
+				ActiveHealthBar->AddToViewport();
+			}
+		}
+
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
-		if (NewHealth < 0.0f)
+		if (NewHealth <= 0.0f)
 		{
 			// stop BT
 			AActionAIController* AIC = Cast<AActionAIController>(GetController());
