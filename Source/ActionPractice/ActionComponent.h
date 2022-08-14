@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameplayTagContainer.h"
 #include "ActionComponent.generated.h"
 
 class UAction;
@@ -13,6 +14,8 @@ class ACTIONPRACTICE_API UActionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
+	FGameplayTagContainer ActiveGamePlayTags;
 	// Sets default values for this component's properties
 	UActionComponent();
 	UFUNCTION(BlueprintCallable, Category = "Actions")
