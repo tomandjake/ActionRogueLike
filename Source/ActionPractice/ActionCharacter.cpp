@@ -7,6 +7,7 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include "InteractionComponent.h"
 #include "AttributeComponent.h"
+#include "ActionComponent.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -22,6 +23,7 @@ AActionCharacter::AActionCharacter()
 	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComp"));
 
 	AttributeComp = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeComp"));
+	ActionComp = CreateDefaultSubobject<UActionComponent>(TEXT("ActionComp"));
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
@@ -65,6 +67,9 @@ void AActionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AActionCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AActionCharacter::PrimaryInteract);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AActionCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AActionCharacter::SprintStop);
 }
 
 void AActionCharacter::MoveForward(float value)
@@ -118,6 +123,16 @@ void AActionCharacter::PrimaryAttack_TimeElapsed()
 
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 	}
+}
+
+void AActionCharacter::SprintStart()
+{
+	ActionComp->StartActionByName(this, "Sprint");
+}
+
+void AActionCharacter::SprintStop()
+{
+	ActionComp->StopActionByName(this, "Sprint");
 }
 
 void AActionCharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta)

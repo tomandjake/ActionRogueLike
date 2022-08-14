@@ -45,12 +45,17 @@ private:
 		class USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
 		class UInteractionComponent* InteractionComp;
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UActionComponent* ActionComp;
 
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void PrimaryAttack();
 	void PrimaryInteract();
 	void PrimaryAttack_TimeElapsed();
+	void SprintStart();
+	void SprintStop();
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta);
