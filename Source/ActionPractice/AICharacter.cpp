@@ -85,6 +85,13 @@ void AAICharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent*
 
 			// set lifespan
 			SetLifeSpan(10.0f);
+
+			// broadcast
+			auto Killer = Cast<AActionCharacter>(InstigatorActor);
+			if(Killer)
+			{
+				Killer->OnKillEventHandle.Broadcast();
+			}
 		}
 	}
 

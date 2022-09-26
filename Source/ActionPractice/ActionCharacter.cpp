@@ -8,6 +8,9 @@
 #include "InteractionComponent.h"
 #include "AttributeComponent.h"
 #include "ActionComponent.h"
+#include "ActionGameModeBase.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AActionCharacter::AActionCharacter()
@@ -39,13 +42,15 @@ void AActionCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	AttributeComp->OnHealthChanged.AddDynamic(this, &AActionCharacter::OnHealthChanged);
+	OnKillEventHandle.AddDynamic(this, &AActionCharacter::OnKillEvent);
 }
+
+
 
 // Called when the game starts or when spawned
 void AActionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -121,7 +126,13 @@ void AActionCharacter::PrimaryAttack_TimeElapsed()
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParams.Instigator = this;
 
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+		auto Projectile = GetWorld()->SpawnActorDeferred<AActor>(ProjectileClass, SpawnTM,this,this, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		auto MovementComp = Cast<UProjectileMovementComponent>(Projectile->GetComponentByClass(ProjectileMovementClass));
+		if (MovementComp)
+		{
+			MovementComp->InitialSpeed = 10000.0f;
+		}
+		UGameplayStatics::FinishSpawningActor(Projectile, SpawnTM);
 	}
 }
 
@@ -144,6 +155,24 @@ void AActionCharacter::OnHealthChanged(AActor* InstigatorActor, UAttributeCompon
 		DisableInput(PC);
 	}
 }
+void AActionCharacter::OnKillEvent()
+{
+	ComboKillNum ++;
 
+	AActionGameModeBase* GameMode = Cast<AActionGameModeBase>(GetWorld()->GetAuthGameMode());
+	if(GameMode)
+	{
+		GameMode->HUDEventDispatcher->BroadcastOnKillEvent(ComboKillNum);
+	}
+	
+	if(KillTimerHandle.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(KillTimerHandle);
+	}
+	GetWorld()->GetTimerManager().SetTimer(KillTimerHandle, [this]()
+	{
+		ComboKillNum = 0;
+	},3.0f,false);
+}
 
 

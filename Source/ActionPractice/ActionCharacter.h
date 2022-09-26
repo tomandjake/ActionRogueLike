@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HUD/HUDEventDispatcher.h"
 #include "ActionCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FKillEventHandle);
+
+class UMovementComponent;
 UCLASS()
 class ACTIONPRACTICE_API AActionCharacter : public ACharacter
 {
@@ -25,7 +29,8 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
-
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<UMovementComponent> ProjectileMovementClass;
 	FTimerHandle Timerhandle_PrimaryAttack;
 public:	
 	// Called every frame
@@ -38,6 +43,9 @@ public:
 		float ForwardSpeed = 50;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		class UAttributeComponent* AttributeComp;
+
+	FKillEventHandle OnKillEventHandle;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 		class UCameraComponent* CameraComp;
@@ -62,4 +70,8 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
+	int ComboKillNum = 0;
+	FTimerHandle KillTimerHandle;
+	UFUNCTION()
+	void OnKillEvent();
 };

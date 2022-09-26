@@ -41,7 +41,7 @@ bool UAttributeComponent::ApplyHealthChange(AActor* Instigator,float Delta)
 	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
 	float ActualDelta = Health - OldHealth;
-	OnHealthChanged.Broadcast(nullptr, nullptr, Health, Delta);
+	OnHealthChanged.Broadcast(Instigator, nullptr, Health, Delta);
 
 	if (Delta < 0.0f && Health <= 0.0f)
 	{

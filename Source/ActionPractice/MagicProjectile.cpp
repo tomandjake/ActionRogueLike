@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "AttributeComponent.h"
+#include "ActionCharacter.h"
 
 // Sets default values
 AMagicProjectile::AMagicProjectile()
@@ -23,6 +24,7 @@ AMagicProjectile::AMagicProjectile()
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
 	MovementComp->InitialSpeed = 1000.0f;
+
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
 
@@ -33,6 +35,11 @@ AMagicProjectile::AMagicProjectile()
 void AMagicProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	auto TempInstigator = GetInstigator();
+	if (TempInstigator && TempInstigator->GetClass()->IsChildOf<AActionCharacter>())
+	{
+		MovementComp->InitialSpeed = 10000.0f;
+	}
 	
 }
 

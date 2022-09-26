@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
+#include "HUD/HUDEventDispatcher.h"
 #include "ActionGameModeBase.generated.h"
 
 /**
@@ -26,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UCurveFloat* DiffcultyCurve;
 
+	UPROPERTY()
+	
+	
 	FTimerHandle TimerHandle_SpawnBots;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
@@ -44,10 +48,12 @@ protected:
 	UFUNCTION()
 	void RespawnPlayerElapsed(AController* Controller);
 public:
-	 
 	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
 
 	AActionGameModeBase();
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)override;
 	virtual void StartPlay() override;
-
+	
+	UPROPERTY()
+	AHUDEventDispatcher* HUDEventDispatcher;
 };

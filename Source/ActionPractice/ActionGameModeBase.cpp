@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ActionGameModeBase.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
@@ -9,6 +7,7 @@
 #include "AttributeComponent.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
 #include "ActionCharacter.h"
+#include "GameFramework/HUD.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable Spawning of bots via timer."), ECVF_Cheat);
 
@@ -17,10 +16,15 @@ AActionGameModeBase::AActionGameModeBase()
 	SpawnTimerInterval = 2.0f;
 }
 
+void AActionGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+	HUDEventDispatcher = NewObject<AHUDEventDispatcher>();
+}
+
 void AActionGameModeBase::StartPlay()
 {
 	Super::StartPlay();
-
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnBots, this, &AActionGameModeBase::SpawnBotTimerElapsed, SpawnTimerInterval, true);
 }
 
