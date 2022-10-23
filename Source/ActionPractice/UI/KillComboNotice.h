@@ -13,11 +13,6 @@
 class UWidgetSwitcher;
 class UImage;
 
-struct my_struct
-{
-	
-};
-
 FTimerHandle;
 
 UCLASS()
@@ -38,7 +33,11 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_3;
 
+	UPROPERTY(EditAnywhere)
+	TArray<USoundWave*> SoundWaves;
+
 	FTimerHandle TimerHandle;
+	
 
 	virtual void NativeConstruct() override;
 	

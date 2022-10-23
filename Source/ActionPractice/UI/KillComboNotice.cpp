@@ -2,7 +2,6 @@
 
 
 #include "KillComboNotice.h"
-
 #include "ActionPractice/ActionGameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/WidgetSwitcher.h"
@@ -25,17 +24,23 @@ void UKillComboNotice::NativeConstruct()
 
 void UKillComboNotice::UpdateNotice(int32 KillNum)
 {
-	if(KillNum>0 && KillNum <= 3)
+	if(KillNum>0)
 	{
-		if(TimerHandle.IsValid())
-		{
-			GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-		}
+		KillNum = FMath::Min(3, KillNum);
 		KillNumSwitcher->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		KillNumSwitcher->SetActiveWidgetIndex(KillNum - 1);
+		if(SoundWaves.Num() >= KillNum)
+		{
+			auto Sound = SoundWaves[KillNum - 1];
+			if(Sound && !TimerHandle.IsValid())
+			{
+				PlaySound(Sound);
+			}
+		}
 		auto CallBack = [this]()
 		{
 			KillNumSwitcher->SetVisibility(ESlateVisibility::Hidden);
+			GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 		};
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle,CallBack,1.5,false);
 	}
