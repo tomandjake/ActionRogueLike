@@ -28,8 +28,6 @@ protected:
 	UCurveFloat* DiffcultyCurve;
 
 	UPROPERTY()
-	
-	
 	FTimerHandle TimerHandle_SpawnBots;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AI")

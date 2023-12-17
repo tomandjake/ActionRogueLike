@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "yFt11V1DLeShA+qBdfITlkXLxD0mr66CV75mctjEdtZHf8xee334FodeG/+dsZ/MP1ERLKHe2yYcTtNqAoPQYA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Administrator\\Projects\\Unreal-Engine\\ActionRogueLike\\Plugins\\UnLua\\Source\\UnLuaDefaultParamCollectorUbtPlugin\\UnLuaDefaultParamCollectorUbtPlugin.ubtplugin.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

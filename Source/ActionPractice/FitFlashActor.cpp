@@ -19,7 +19,7 @@ AFitFlashActor::AFitFlashActor()
 void AFitFlashActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	//UE_LOG(LogTemp,Warning,TEXT("afit flash acgtor begin"));
 }
 
 void AFitFlashActor::OnHealthChanged(AActor* InstigatorActor, UAttributeComponent* OwningComp, float NewHealth, float Delta)

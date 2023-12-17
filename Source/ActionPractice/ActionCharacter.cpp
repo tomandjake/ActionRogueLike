@@ -159,6 +159,7 @@ void AActionCharacter::OnKillEvent()
 {
 	ComboKillNum ++;
 
+
 	AActionGameModeBase* GameMode = Cast<AActionGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(GameMode)
 	{

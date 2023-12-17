@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\administrator\\projects\\unreal-engine\\actionroguelike\\plugins\\unluaextensions\\luaprotobuf\\source\\private\\luaprotobufmodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\administrator\\projects\\unreal-engine\\actionroguelike\\plugins\\unluaextensions\\luaprotobuf\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\luaprotobuf\\pch.luaprotobuf.h.pch",
+        "Includes": [
+            "c:\\users\\administrator\\projects\\unreal-engine\\actionroguelike\\plugins\\unluaextensions\\luaprotobuf\\source\\src\\pb.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

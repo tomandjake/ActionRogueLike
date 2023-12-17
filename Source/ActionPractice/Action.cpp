@@ -14,5 +14,4 @@ void UAction::StopAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Stoping: % s"), *GetNameSafe(this));
 
-
 }
